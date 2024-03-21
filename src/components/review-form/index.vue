@@ -11,12 +11,17 @@ const emit = defineEmits<{
 const title = ref("")
 const content = ref("")
 
+const MAX_LENGTH = {
+  title: 9,
+  content: 50
+} as const
+
 const invalid = computed(() => {
   return (
     title.value === "" ||
-    title.value.length > 10 ||
+    title.value.length > MAX_LENGTH.title ||
     content.value === "" ||
-    content.value.length > 50
+    content.value.length > MAX_LENGTH.content
   )
 })
 
@@ -27,13 +32,17 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <form aria-label="form" @submit.prevent="onSubmit">
-    <text-box label="タイトル" name="title" v-model="title"></text-box>
-    <text-box label="内容" name="content" v-model="content"></text-box>
-    <div class="button-area">
-      <button class="button" :disabled="invalid">登録</button>
-    </div>
-  </form>
+  <div>
+    <p>タイトル:&nbsp;{{ MAX_LENGTH.title }}文字まで</p>
+    <p>内容:&nbsp;{{ MAX_LENGTH.content }}文字まで</p>
+    <form aria-label="form" @submit.prevent="onSubmit">
+      <text-box label="タイトル" name="title" v-model="title"></text-box>
+      <text-box label="内容" name="content" v-model="content"></text-box>
+      <div class="button-area">
+        <button class="button" :disabled="invalid">登録</button>
+      </div>
+    </form>
+  </div>
 </template>
 
 <style scoped>

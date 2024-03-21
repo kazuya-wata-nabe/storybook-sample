@@ -20,7 +20,7 @@ type Story = StoryObj<typeof meta>
 export const Primary: Story = {
   name: "基本の表示",
   args: {
-    onSubmit: fn(),
+    onSubmit: form => alert(JSON.stringify(form, null, 2)),
   },
 }
 
@@ -34,7 +34,7 @@ export const ValidInput: Story = {
 
     await step("タイトル入力", async () => {
       const title = canvas.getByLabelText("タイトル")
-      await userEvent.type(title, "あ".repeat(10))
+      await userEvent.type(title, "あ".repeat(9))
     })
 
     await step("内容入力", async () => {
@@ -56,19 +56,19 @@ export const ValidInput: Story = {
 export const InvalidInput: Story = {
   name: "入力Ng",
   args: {
-    onSubmit: form => alert(JSON.stringify(form, null, 2)),
+    onSubmit: fn(),
   },
   play: async ({ canvasElement, args, step }) => {
     const canvas = within(canvasElement)
 
     await step("タイトル入力", async () => {
       const title = canvas.getByLabelText("タイトル")
-      await userEvent.type(title, "hogehogefuga")
+      await userEvent.type(title, "1234567890")
     })
 
     await step("内容入力", async () => {
       const content = canvas.getByLabelText("内容")
-      await userEvent.type(content, "あ".repeat(50))
+      await userEvent.type(content, "あ")
     })
 
     await step("登録を押しても反応しない", async () => {
