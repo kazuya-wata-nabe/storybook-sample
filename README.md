@@ -30,11 +30,15 @@ pnpm storybook
 
 ### Run Storybook Tests
 
+事前に`pnpm storybook`していないと実行できません
+
 ```sh
 pnpm storybook:test
 ```
 
 ### Run Storybook Screenshot
+
+事前に`pnpm storybook`していないと実行できません
 
 ```sh
 pnpm storybook:screenshot
