@@ -13,7 +13,7 @@ const content = ref("")
 
 const MAX_LENGTH = {
   title: 9,
-  content: 50
+  content: 50,
 } as const
 
 const invalid = computed(() => {

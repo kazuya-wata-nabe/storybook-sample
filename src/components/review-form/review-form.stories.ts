@@ -20,7 +20,7 @@ type Story = StoryObj<typeof meta>
 export const Primary: Story = {
   name: "基本の表示",
   args: {
-    onSubmit: form => alert(JSON.stringify(form, null, 2)),
+    onSubmit: (form) => alert(JSON.stringify(form, null, 2)),
   },
 }
 
