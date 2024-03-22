@@ -1,7 +1,7 @@
-# 参考: 
+# 参考:
 #   https://storybook.js.org/docs/writing-tests/test-runner#run-against-non-deployed-storybooks
 #   https://dev.to/ayomiku222/how-to-cache-playwright-browser-on-github-actions-51o6
-name: 'Storybook Tests'
+name: "Storybook Tests"
 on:
   # push:
   #   branches:
@@ -19,7 +19,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version-file: 'package.json'
+          node-version-file: "package.json"
 
       - name: Install pnpm
         uses: pnpm/action-setup@v3
@@ -39,7 +39,7 @@ jobs:
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
-       
+
       - name: Cache playwright binaries
         uses: actions/cache@v4
         id: playwright-cache
@@ -50,20 +50,22 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
-      
+
       - name: Install Playwright
-        run: npx playwright install --with-deps
+        run: pnpm exec playwright install --with-deps
         if: steps.playwright-cache.outputs.cache-hit != 'true'
 
       - name: Install Playwright Deps
-        run: npx playwright install-deps
+        run: pnpm exec playwright install-deps
         if: steps.playwright-cache.outputs.cache-hit != 'true'
 
       - name: Build Storybook
         run: pnpm storybook:build --quiet
 
+      # --shardで並列できるらしい
+      # 参考: https://zenn.dev/zoma/articles/88a75e7be29a44
       - name: Serve Storybook and run tests
         run: |
-          npx concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
-            "npx http-server storybook-static --port 6006 --silent" \
-            "npx wait-on tcp:6006 && pnpm storybook:test"
+          pnpm exec concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
+            "pnpm exec http-server storybook-static --port 6006 --silent" \
+            "pnpm exec wait-on tcp:6006 && pnpm storybook:test"
