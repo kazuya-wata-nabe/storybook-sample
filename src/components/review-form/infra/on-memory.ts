@@ -1,7 +1,7 @@
 import type { ReviewForm, ReviewRepository } from "../domain"
 
 export class ReviewRepositoryOnMemory implements ReviewRepository {
-  save(): Promise<ReviewForm & { id: number }> {
+  save(): Promise<ReviewForm> {
     throw new Error("Method not implemented.")
   }
 }
