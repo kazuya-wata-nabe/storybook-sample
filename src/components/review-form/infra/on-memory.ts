@@ -1,7 +1,7 @@
-import type { PetRepository } from "../domain/repository"
+import type { ReviewForm, ReviewRepository } from "../domain"
 
-export class PetRepositoryOnMemory implements PetRepository {
-  list(): Promise<Pet & { id: number }> {
+export class ReviewRepositoryOnMemory implements ReviewRepository {
+  save(): Promise<ReviewForm & { id: number }> {
     throw new Error("Method not implemented.")
   }
 }

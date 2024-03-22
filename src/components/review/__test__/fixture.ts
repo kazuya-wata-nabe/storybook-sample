@@ -1,4 +1,4 @@
-import type { Review } from "../domain/model"
+import type { Review } from "../domain"
 
 export const data1 = Array<Review>(
   {

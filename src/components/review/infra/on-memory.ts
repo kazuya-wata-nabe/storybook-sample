@@ -1,8 +1,13 @@
-import type { Pet } from "../domain/model"
-import type { PetRepository } from "../domain/repository"
+import type { Review, ReviewQueryService } from "../domain"
 
-export class PetRepositoryOnMemory implements PetRepository {
-  list(): Promise<Pet & { id: number }> {
-    throw new Error("Method not implemented.")
+export class ReviewQueryServiceOnMemory implements ReviewQueryService {
+  private items: Review[] = [
+    { title: "hoge", content: "fuga", netabare: false },
+    { title: "hogee", content: "fuga!", netabare: false },
+    { title: "hogeee", content: "fuga?", netabare: false },
+  ].map((item, idx) => ({ id: idx + 1, ...item }))
+
+  async list() {
+    return [...this.items]
   }
 }
