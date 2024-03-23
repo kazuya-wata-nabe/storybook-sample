@@ -66,6 +66,6 @@ jobs:
       # 参考: https://zenn.dev/zoma/articles/88a75e7be29a44
       - name: Serve Storybook and run tests
         run: |
-          pnpx concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
-            "pnpx http-server storybook-static --port 6006 --silent" \
-            "pnpx wait-on tcp:6006 && pnpm storybook:test"
+          pnpm dlx concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
+            "pnpm dlx http-server storybook-static --port 6006 --silent" \
+            "pnpm dlx wait-on tcp:6006 && pnpm storybook:test"
