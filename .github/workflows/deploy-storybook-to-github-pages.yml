@@ -5,6 +5,8 @@ on:
   push:
     branches:
       - "main"
+    paths:
+      - "**.stories.ts"
   workflow_dispatch:
 
 permissions:
