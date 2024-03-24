@@ -3,8 +3,10 @@
 storybookのサンプル
 
 ## Project Setup
-npmでもok
-nodeのバージョン管理はvoltaを推奨
+
+nodeのバージョン管理は[volta](https://volta.sh/)を推奨
+
+[pnpm](https://pnpm.io/ja/installation#volta%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B)を使ってください
 
 ```sh
 pnpm install
@@ -30,7 +32,7 @@ pnpm storybook
 
 ### Run Storybook Tests
 
-事前に`pnpm storybook`していないと実行できません
+事前に`pnpm storybook`してください
 
 ```sh
 pnpm storybook:test
@@ -38,7 +40,7 @@ pnpm storybook:test
 
 ### Run Storybook Screenshot
 
-事前に`pnpm storybook`していないと実行できません
+事前に`pnpm storybook`してください
 
 ```sh
 pnpm storybook:screenshot
