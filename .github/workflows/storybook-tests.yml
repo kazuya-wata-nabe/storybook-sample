@@ -30,7 +30,10 @@ jobs:
       - name: Get installed Playwright version
         id: playwright-version
         shell: bash
-        run: echo "PLAYWRIGHT_VERSION=$(pnpm playwright --version )" >> $GITHUB_ENV
+        run: |
+          PLAYWRIGHT_VERSION=$(pnpm dlx playwright -V | awk '{ print $2 }')
+          echo "Playwright's Version: $PLAYWRIGHT_VERSION"
+          echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> $GITHUB_ENV
 
       - name: Cache playwright binaries
         uses: actions/cache@v4
