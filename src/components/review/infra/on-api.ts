@@ -15,7 +15,7 @@ const convert = (res: ReviewResponse[]) =>
     netabare: r.neta_bare,
   }))
 
-const baseUrl = import.meta.env.API_BASE_URL ?? ""
+const baseUrl = import.meta.env.VITE_API_BASE_URL ?? ""
 const url = baseUrl.concat("/reviews")
 
 export class ReviewQueryServiceOnApi implements ReviewQueryService {
