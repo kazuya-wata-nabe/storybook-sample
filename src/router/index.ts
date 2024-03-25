@@ -1,4 +1,4 @@
-import { ReviewQueryServiceOnMemory } from "@/components/review/infra/on-memory"
+import { ReviewQueryServiceOnApi } from "@/components/review/infra"
 import {
   createMemoryHistory,
   createRouter,
@@ -6,7 +6,7 @@ import {
   type RouteRecordRaw,
 } from "vue-router"
 
-const HomeView = () => import("@/views/HomeView.vue")
+const HomeView = () => import("@/views/home/index.vue")
 const StoryBookSample = () => import("@/stories/Page.vue")
 
 export const createMemoryRouter = () => {
@@ -26,7 +26,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: "/",
     name: "home",
-    props: { queryService: new ReviewQueryServiceOnMemory() },
+    props: { queryService: new ReviewQueryServiceOnApi() },
     component: HomeView,
   },
   {

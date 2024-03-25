@@ -1,19 +1,22 @@
 import { type Review, type ReviewQueryService } from "../domain"
 
-const baseUrl = import.meta.env.API_BASE_URL ?? "https://httpbin.org/"
-const url = baseUrl.concat("/json")
-
-type ApiResponse = {
-  slideshow: { slides: { title: string }[] }
+export type ReviewResponse = {
+  id: number
+  title: string
+  content: string
+  neta_bare: boolean
 }
 
-const convert = (res: ApiResponse) =>
-  res.slideshow.slides.map<Review>((r, index) => ({
-    id: index,
+const convert = (res: ReviewResponse[]) =>
+  res.map<Review>((r, index) => ({
+    id: index * 100,
     title: r.title,
-    content: "content is ".concat(r.title),
-    netabare: (index + 1) % 2 === 0,
+    content: r.content,
+    netabare: r.neta_bare,
   }))
+
+const baseUrl = import.meta.env.API_BASE_URL ?? ""
+const url = baseUrl.concat("/reviews")
 
 export class ReviewQueryServiceOnApi implements ReviewQueryService {
   async list() {
@@ -21,7 +24,7 @@ export class ReviewQueryServiceOnApi implements ReviewQueryService {
       method: "GET",
       mode: "cors",
     })
-    const data = (await res.json()) as ApiResponse
+    const data = (await res.json()) as ReviewResponse[]
     return convert(data)
   }
 }

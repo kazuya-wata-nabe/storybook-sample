@@ -49,6 +49,8 @@
     "eslint-plugin-vue": "^9.17.0",
     "happy-dom": "^14.1.0",
     "jsdom": "^24.0.0",
+    "msw": "^2.2.10",
+    "msw-storybook-addon": "2.0.0-beta.1",
     "npm-run-all2": "^6.1.2",
     "prettier": "^3.0.3",
     "storybook": "^8.0.2",
@@ -61,5 +63,10 @@
   "volta": {
     "node": "20.11.1",
     "pnpm": "8.15.5"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
