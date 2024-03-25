@@ -43,9 +43,7 @@ jobs:
         run: pnpm install
 
       - name: Build Storybook
-        run: |
-          VITE_API_BASE_URL=https://kazuya-wata-nabe.github.io/storybook-sample \
-          pnpm storybook:build
+        run: pnpm storybook:build
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
