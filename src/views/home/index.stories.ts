@@ -5,8 +5,7 @@ import { data1 } from "./__test__/fixture"
 import Component from "./index.vue"
 /**
  * 漫画のレビューを一覧表示します
- * - デフォルトはネタバレ非表示です
- * - レビュー内容は折り返して表示します
+ * - 表示するデータは`/reviews`にリクエストして取得します
  */
 const meta = {
   component: Component,
