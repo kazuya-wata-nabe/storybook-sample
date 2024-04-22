@@ -10,7 +10,7 @@ on:
 
 jobs:
   test:
-    if: github.event.pull_request.draft == false || github.event.pull_request.title == *"WIP"*
+    if: github.event.pull_request.draft == false || github.event.pull_request.title == \*"WIP"\*
     timeout-minutes: 60
     runs-on: ubuntu-latest
 
