@@ -11,14 +11,14 @@ on:
 jobs:
   test:
     # if: ${{ github.event.pull_request.draft == false || !contains(github.event.pull_request.title, '[WIP]') }}
-    if: github.event.pull_request.draft == false || contains(github.event.pull_request.title, 'WIP') == false
+    if: github.event.pull_request.draft == false && contains(github.event.pull_request.title, 'WIP') == false
     timeout-minutes: 60
     runs-on: ubuntu-latest
 
     steps:
       - name: Set WIP variable
         run: |
-          if [[ ${{ github.event.pull_request.title }} == *"WIP"* ]]; then
+          if [[ ${{ github.event.pull_request.title }} == "WIP" ]]; then
             echo "WIP is in the pull request title"
             echo "WIP=true" >> $GITHUB_ENV
           else
