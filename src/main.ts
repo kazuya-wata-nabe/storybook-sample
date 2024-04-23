@@ -9,3 +9,5 @@ const app = createApp(App)
 app.use(router.createWebRouter())
 
 app.mount("#app")
+
+console.debug('hello')
