@@ -21,18 +21,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set WIP variable
-        run: |
-          if [[ ${{ github.event.pull_request.title }} == "WIP" ]]; then
-            echo "WIP is in the pull request title"
-            echo "WIP=true" >> $GITHUB_ENV
-          else
-            echo "WIP is not in the pull request title"
-            echo "WIP"=false" >> $GITHUB_ENV
-          fi
-        id: wip
-
-      - run: echo ${{ env.PLAYWRIGHT_VERSION }}
+      - run: echo Hello
 
       # - name: Checkout
       #   uses: actions/checkout@v4
