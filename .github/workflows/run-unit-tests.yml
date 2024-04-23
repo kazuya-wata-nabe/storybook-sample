@@ -15,61 +15,58 @@ on:
 
 jobs:
   test:
-    # if: ${{ github.event.pull_request.draft == false || !contains(github.event.pull_request.title, '[WIP]') }}
     if: github.event.pull_request.draft == false && contains(github.event.pull_request.title, 'WIP') == false
     timeout-minutes: 60
     runs-on: ubuntu-latest
 
     steps:
-      - run: echo Hello!!
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      # - name: Checkout
-      #   uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
 
-      # - name: Install pnpm
-      #   uses: pnpm/action-setup@v3
-      #   with:
-      #     version: 8
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: "package.json"
+          cache: "pnpm"
 
-      # - name: Setup Node
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version-file: "package.json"
-      #     cache: "pnpm"
+      - name: Get installed Playwright version
+        id: playwright-version
+        shell: bash
+        run: |
+          PLAYWRIGHT_VERSION=$(pnpm dlx playwright -V | awk '{ print $2 }')
+          echo "Playwright's Version: $PLAYWRIGHT_VERSION"
+          echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> $GITHUB_ENV
 
-      # - name: Get installed Playwright version
-      #   id: playwright-version
-      #   shell: bash
-      #   run: |
-      #     PLAYWRIGHT_VERSION=$(pnpm dlx playwright -V | awk '{ print $2 }')
-      #     echo "Playwright's Version: $PLAYWRIGHT_VERSION"
-      #     echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> $GITHUB_ENV
+      - name: Cache playwright binaries
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
 
-      # - name: Cache playwright binaries
-      #   uses: actions/cache@v4
-      #   id: playwright-cache
-      #   with:
-      #     path: ~/.cache/ms-playwright
-      #     key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
+      - name: Install dependencies
+        run: pnpm install
 
-      # - name: Install dependencies
-      #   run: pnpm install
+      - name: Install Playwright
+        run: pnpm playwright install --with-deps
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
 
-      # - name: Install Playwright
-      #   run: pnpm playwright install --with-deps
-      #   if: steps.playwright-cache.outputs.cache-hit != 'true'
+      - name: Install Playwright Deps
+        run: pnpm playwright install-deps
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
 
-      # - name: Install Playwright Deps
-      #   run: pnpm playwright install-deps
-      #   if: steps.playwright-cache.outputs.cache-hit != 'true'
+      - name: Build Storybook
+        run: pnpm storybook:build --quiet
 
-      # - name: Build Storybook
-      #   run: pnpm storybook:build --quiet
-
-      # # --shardで並列できるらしい
-      # # 参考: https://zenn.dev/zoma/articles/88a75e7be29a44
-      # - name: Serve Storybook and run tests
-      #   run: |
-      #     pnpm dlx concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
-      #       "pnpm dlx http-server storybook-static --port 6006 --silent" \
-      #       "pnpm dlx wait-on tcp:6006 && pnpm storybook:test"
+      # --shardで並列できるらしい
+      # 参考: https://zenn.dev/zoma/articles/88a75e7be29a44
+      - name: Serve Storybook and run tests
+        run: |
+          pnpm dlx concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
+            "pnpm dlx http-server storybook-static --port 6006 --silent" \
+            "pnpm dlx wait-on tcp:6006 && pnpm storybook:test"
