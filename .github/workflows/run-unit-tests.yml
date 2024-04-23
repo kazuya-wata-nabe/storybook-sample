@@ -3,14 +3,15 @@
 #   https://dev.to/ayomiku222/how-to-cache-playwright-browser-on-github-actions-51o6
 name: "Storybook Tests"
 on:
-  push:
-  #   branches:
-  #     - 'main'
+  pull_request:  
+    branches:
+      - 'main'
   workflow_dispatch:
 
 jobs:
   test:
-    if: ${{ github.event.pull_request.draft == false || !contains(github.event.pull_request.title, '[WIP]') }}
+    # if: ${{ github.event.pull_request.draft == false || !contains(github.event.pull_request.title, '[WIP]') }}
+    if: contains(github.event.pull_request.title, '[skip ci]') == false
     timeout-minutes: 60
     runs-on: ubuntu-latest
 
