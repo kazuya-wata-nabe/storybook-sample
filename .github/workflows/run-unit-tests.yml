@@ -15,7 +15,8 @@ on:
 
 jobs:
   test:
-    if: github.event.pull_request.draft == false && contains(github.event.pull_request.title, 'WIP') == false
+    # if: github.event.pull_request.draft == false && contains(github.event.pull_request.title, 'WIP') == false
+    if: github.event.pull_request.draft == false
     timeout-minutes: 60
     runs-on: ubuntu-latest
 
