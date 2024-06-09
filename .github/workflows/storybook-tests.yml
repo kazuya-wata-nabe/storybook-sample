@@ -10,56 +10,50 @@ on:
 
 jobs:
   test:
-    timeout-minutes: 60
+    timeout-minutes: 3
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
+      - run: corepack enable
+        shell: bash
 
-      - name: Setup Node
+      - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version-file: "package.json"
-          cache: "pnpm"
+          node-version-file: package.json
+          cache: pnpm
+
+      - name: Install dependencies
+        shell: bash
+        run: pnpm install
+        env:
+          HUSKY: 0
 
       - name: Get installed Playwright version
         id: playwright-version
-        shell: bash
-        run: |
-          PLAYWRIGHT_VERSION=$(pnpm dlx playwright -V | awk '{ print $2 }')
-          echo "Playwright's Version: $PLAYWRIGHT_VERSION"
-          echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> $GITHUB_ENV
+        run: echo "PLAYWRIGHT_VERSION=$(pnpm list @playwright/test | grep @playwright | sed 's/.* //')" >> $GITHUB_ENV
 
       - name: Cache playwright binaries
         uses: actions/cache@v4
         id: playwright-cache
         with:
-          path: ~/.cache/ms-playwright
+          path: |
+            ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
 
-      - name: Install dependencies
-        run: pnpm install
-
       - name: Install Playwright
-        run: pnpm playwright install --with-deps
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-
-      - name: Install Playwright Deps
-        run: pnpm playwright install-deps
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: |
+          pnpm playwright install --with-deps &&
+          pnpm playwright install-deps
 
       - name: Build Storybook
         run: pnpm storybook:build --quiet
 
-      # --shardで並列できるらしい
-      # 参考: https://zenn.dev/zoma/articles/88a75e7be29a44
       - name: Serve Storybook and run tests
         run: |
           pnpm dlx concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
             "pnpm dlx http-server storybook-static --port 6006 --silent" \
-            "pnpm dlx wait-on tcp:6006 && pnpm storybook:test"
+            "pnpm dlx wait-on tcp:6006 && pnpm test:story"

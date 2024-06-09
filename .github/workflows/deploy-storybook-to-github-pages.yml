@@ -28,19 +28,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
+      - run: corepack enable
+        shell: bash
 
-      - name: Setup Node
+      - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version-file: "package.json"
-          cache: "pnpm"
+          node-version-file: package.json
+          cache: pnpm
 
       - name: Install dependencies
+        shell: bash
         run: pnpm install
+        env:
+          HUSKY: 0
 
       - name: Build Storybook
         run: pnpm storybook:build

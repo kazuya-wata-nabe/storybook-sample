@@ -13,39 +13,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Setup Node
+      - run: corepack enable
+        shell: bash
+
+      - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version-file: "package.json"
-          cache: "pnpm"
-
-      - name: Get installed Playwright version
-        id: playwright-version
-        shell: bash
-        run: |
-          PLAYWRIGHT_VERSION=$(pnpm dlx playwright -V | awk '{ print $2 }')
-          echo "Playwright's Version: $PLAYWRIGHT_VERSION"
-          echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> $GITHUB_ENV
-
-      - name: Cache playwright binaries
-        uses: actions/cache@v4
-        id: playwright-cache
-        with:
-          path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
+          node-version-file: package.json
+          cache: pnpm
 
       - name: Install dependencies
+        shell: bash
         run: pnpm install
-
-      - name: Install Playwright
-        run: pnpm playwright install --with-deps
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-
-      - name: Install Playwright Deps
-        run: pnpm playwright install-deps
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        env:
+          HUSKY: 0

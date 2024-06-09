@@ -7,7 +7,6 @@ import {
 } from "vue-router"
 
 const HomeView = () => import("@/views/home/index.vue")
-const StoryBookSample = () => import("@/stories/Page.vue")
 
 export const createMemoryRouter = () => {
   return createRouter({
@@ -22,16 +21,11 @@ export const createWebRouter = () =>
     routes,
   })
 
-const routes: RouteRecordRaw[] = [
+const routes = [
   {
     path: "/",
     name: "home",
     props: { queryService: new ReviewQueryServiceOnApi() },
     component: HomeView,
   },
-  {
-    path: "/storybook",
-    name: "storybook",
-    component: StoryBookSample,
-  },
-]
+] as const satisfies RouteRecordRaw[]

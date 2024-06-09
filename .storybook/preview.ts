@@ -5,6 +5,8 @@ import "../src/assets/main.css"
 
 initialize({
   onUnhandledRequest: "bypass",
+  // github pagesでもmswを使えるようにするため
+  serviceWorker: { url: "mockServiceWorker.js" },
 })
 
 const preview: Preview = {
