@@ -1,4 +1,4 @@
-import { ReviewQueryServiceOnMemory } from "@/components/review/infra"
+import { ReviewQueryServiceOnApi } from "@/components/review/infra"
 import type { Meta, StoryObj } from "@storybook/vue3"
 import { HttpResponse, http } from "msw"
 import { data1 } from "./__test__/fixture"
@@ -30,6 +30,6 @@ export const Primary: Story = {
     },
   },
   args: {
-    queryService: new ReviewQueryServiceOnMemory(),
+    queryService: new ReviewQueryServiceOnApi(),
   },
 }
