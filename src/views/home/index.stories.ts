@@ -31,6 +31,5 @@ export const Primary: Story = {
   },
   args: {
     queryService: new ReviewQueryServiceOnMemory(),
-    // queryService: new ReviewQueryServiceOnApi(),
   },
 }
