@@ -16,7 +16,9 @@
     "storybook:build": "storybook build",
     "storybook:docs": "storybook build --docs",
     "storybook:test": "test-storybook",
-    "storybook:screenshot": "SCREEN_SHOT=true test-storybook"
+    "storybook:screenshot": "SCREEN_SHOT=true test-storybook",
+    "gen:schema": "openapi-typescript openapi.yaml -o src/schema.d.ts -t --immutable --enum",
+    "postgen:schema": "prettier --write src/schema.d.ts && tsc --noEmit"
   },
   "dependencies": {
     "vue": "^3.4.21",
@@ -52,11 +54,13 @@
     "msw": "^2.2.10",
     "msw-storybook-addon": "^2.0.2",
     "npm-run-all2": "^6.1.2",
+    "openapi-fetch": "^0.9.7",
+    "openapi-typescript": "6.7.6",
     "playwright": "^1.44.1",
     "prettier": "^3.0.3",
     "storybook": "^8.1.6",
     "storycap-testrun": "^0.0.2",
-    "typescript": "~5.4.0",
+    "typescript": "~5.4.2",
     "vite": "^5.1.6",
     "vitest": "^1.4.0",
     "vue-tsc": "^2.0.6"
@@ -69,13 +73,5 @@
       "public"
     ]
   },
-  "packageManager": "pnpm@9.2.0+sha512.98a80fd11c2e7096747762304106432b3ddc67dcf54b5a8c01c93f68a2cd5e05e6821849522a06fb76284d41a2660d5e334f2ee3bbf29183bf2e739b1dafa771",
-  "pnpm": {
-    "overrides": {
-      "express@<4.19.2": ">=4.19.2",
-      "vite@>=5.1.0 <=5.1.6": ">=5.1.7",
-      "tar@<6.2.1": ">=6.2.1",
-      "pug@<=3.0.2": ">=3.0.3"
-    }
-  }
+  "packageManager": "pnpm@9.2.0+sha512.98a80fd11c2e7096747762304106432b3ddc67dcf54b5a8c01c93f68a2cd5e05e6821849522a06fb76284d41a2660d5e334f2ee3bbf29183bf2e739b1dafa771"
 }

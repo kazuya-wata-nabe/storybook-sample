@@ -9,92 +9,122 @@ paths:
     get:
       tags:
         - Review
-      operationId: Reviews_list
       parameters:
-        - name: title
-          in: query
-          required: false
-          schema:
-            type: string
+        - $ref: "#/components/parameters/ReviewListQuery"
       responses:
-        '200':
-          description: The request has succeeded.
+        "200":
+          $ref: "#/components/responses/ReviewListResponse"
+        "400":
+          description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Review'
-        '400':
-          description: The server could not understand the request due to invalid syntax.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                  $ref: "#/components/schemas/Error"
     post:
       tags:
         - Review
-      operationId: Reviews_create
-      parameters: []
       responses:
-        '204':
-          description: There is no content to send for this request, but the headers may be useful.
-        '400':
-          description: The server could not understand the request due to invalid syntax.
+        "201":
+          description: ""
+        "400":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Review'
+                type: array
+                items:
+                  $ref: "#/components/schemas/Error"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Review'
+              $ref: "#/components/schemas/Review"
+  /reviews/{id}:
     put:
       tags:
         - Review
-      operationId: Reviews_update
-      parameters: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
-        '200':
-          description: The request has succeeded.
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Review'
-        '400':
-          description: The server could not understand the request due to invalid syntax.
+                $ref: "#/components/schemas/Review"
+        "400":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Review'
-        '404':
-          description: The server cannot find the requested resource.
+                type: array
+                items:
+                  $ref: "#/components/schemas/Error"
+        "404":
+          description: ""
+          $ref: "#/components/responses/NotFoundErrorResponse"
+
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Review'
+              $ref: "#/components/schemas/Review"
+    delete:
+      tags:
+        - Review
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: ""
+        "404":
+          $ref: "#/components/responses/NotFoundErrorResponse"
+
 components:
+  parameters:
+    ReviewListQuery:
+      name: title
+      in: query
+      required: false
+      schema:
+        type: string
   schemas:
     Error:
       type: object
       required:
+        - code
+        - field
         - message
       properties:
+        code:
+          type: string
+        field:
+          type: string
         message:
           type: string
+    NotFoundError:
+      type: string
+      enum:
+        - NotFound
+      default: NotFound
     Review:
       type: object
       required:
-        - id
         - title
         - content
       properties:
-        id:
-          type: string
         title:
           type: string
           minLength: 1
@@ -103,3 +133,32 @@ components:
           type: string
           minLength: 1
           maxLength: 100
+    WithId:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+
+  responses:
+    ReviewListResponse:
+      description: ""
+      content:
+        "application/json":
+          schema:
+            type: array
+            items:
+              type: object
+              required:
+                - id
+              allOf:
+                - $ref: "#/components/schemas/WithId"
+                - $ref: "#/components/schemas/Review"
+
+    NotFoundErrorResponse:
+      description: ""
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/NotFoundError"
