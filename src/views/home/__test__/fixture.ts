@@ -1,22 +1,19 @@
-import type { ReviewResponse } from "@/components/review/infra"
+import type { SuccessResponse } from "@/shared/api/helper"
 
-export const data1 = Array<ReviewResponse>(
+export const data1: SuccessResponse<"get", "/reviews"> = [
   {
-    id: 1,
+    id: "1",
     title: "レスポンステスト",
     content: "あいうえお",
-    neta_bare: false,
   },
   {
-    id: 2,
+    id: "2",
     title: "めっちゃ面白い",
     content: "１２３４５６７８９０１２３４５６７８９",
-    neta_bare: false,
   },
   {
-    id: 3,
+    id: "3",
     title: "ああああああ",
     content: "いいいいいいいいいいい",
-    neta_bare: false,
   },
-)
+]

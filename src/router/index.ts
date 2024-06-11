@@ -4,20 +4,14 @@ import {
   createRouter,
   createWebHistory,
   type RouteRecordRaw,
+  type RouterHistory,
 } from "vue-router"
 
 const HomeView = () => import("@/views/home/index.vue")
 
-export const createMemoryRouter = () => {
-  return createRouter({
-    history: createMemoryHistory(import.meta.env.BASE_URL),
-    routes,
-  })
-}
-
-export const createWebRouter = () =>
+const create = (fn: (base?: string) => RouterHistory) =>
   createRouter({
-    history: createWebHistory(import.meta.env.BASE_URL),
+    history: fn(import.meta.env.BASE_URL),
     routes,
   })
 
@@ -29,3 +23,7 @@ const routes = [
     component: HomeView,
   },
 ] as const satisfies RouteRecordRaw[]
+
+const isTest = import.meta.env.STORYBOOK === "true"
+
+export const router = isTest ? create(createMemoryHistory) : create(createWebHistory)
