@@ -104,7 +104,13 @@ export type components = {
      * @enum {string}
      */
     NotFoundError: "NotFound"
-    /** @enum {string} */
+    /**
+     * @description
+     * * ADMIN - 管理者
+     * * COMMON - 一般ユーザ
+     *
+     * @enum {string}
+     */
     UserRole: "ADMIN" | "COMMON"
     Me: {
       name: string
@@ -124,6 +130,7 @@ export type components = {
         "application/json": components["schemas"]["Me"]
       }
     }
+    /** @description サンプルです */
     ReviewListResponse: {
       content: {
         "application/json": WithRequired<

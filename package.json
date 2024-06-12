@@ -17,8 +17,8 @@
     "storybook:docs": "storybook build --docs",
     "storybook:test": "test-storybook",
     "storybook:screenshot": "SCREEN_SHOT=true test-storybook",
-    "gen:schema": "openapi-typescript openapi.yaml -o src/schema.d.ts -t --immutable --enum",
-    "postgen:schema": "prettier --write src/schema.d.ts && tsc --noEmit",
+    "gen:schema": "openapi-typescript openapi.yaml -o src/schema.d.ts -t",
+    "postgen:schema": "prettier --write src/schema.d.ts ",
     "gen:json": "pnpm --package=@redocly/cli dlx redocly bundle openapi.yaml --ext json -o cli/openapi.json",
     "gen:handlers": "pnpx vite-node ./cli openapi.json",
     "postgen:handlers": "prettier --write src/lib/msw/handlers.ts"
