@@ -10,6 +10,7 @@ initialize({
 })
 
 const preview: Preview = {
+  loaders: [mswLoader],
   parameters: {
     controls: {
       matchers: {
@@ -18,7 +19,6 @@ const preview: Preview = {
       },
     },
   },
-  loaders: [mswLoader],
   decorators: [
     () => ({
       template: `

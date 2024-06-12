@@ -7,6 +7,16 @@
 type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] }
 
 export type paths = {
+  "/me": {
+    get: {
+      responses: {
+        200: components["responses"]["Me"]
+        401: {
+          content: never
+        }
+      }
+    }
+  }
   "/reviews": {
     get: {
       parameters: {
@@ -55,11 +65,7 @@ export type paths = {
         }
       }
       responses: {
-        200: {
-          content: {
-            "application/json": components["schemas"]["Review"]
-          }
-        }
+        200: components["responses"]["ReviewResponse"]
         400: {
           content: {
             "application/json": components["schemas"]["Error"][]
@@ -98,6 +104,12 @@ export type components = {
      * @enum {string}
      */
     NotFoundError: "NotFound"
+    /** @enum {string} */
+    UserRole: "ADMIN" | "COMMON"
+    Me: {
+      name: string
+      userRole: components["schemas"]["UserRole"]
+    }
     Review: {
       title: string
       content: string
@@ -107,12 +119,25 @@ export type components = {
     }
   }
   responses: {
+    Me: {
+      content: {
+        "application/json": components["schemas"]["Me"]
+      }
+    }
     ReviewListResponse: {
       content: {
         "application/json": WithRequired<
           components["schemas"]["WithId"] & components["schemas"]["Review"],
           "id"
         >[]
+      }
+    }
+    ReviewResponse: {
+      content: {
+        "application/json": WithRequired<
+          components["schemas"]["WithId"] & components["schemas"]["Review"],
+          "id"
+        >
       }
     }
     NotFoundErrorResponse: {

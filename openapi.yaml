@@ -3,8 +3,19 @@ info:
   title: Sample API
   version: 0.0.0
 tags:
+  - name: User
   - name: Review
 paths:
+  /me:
+    get:
+      tags:
+        - User
+      responses:
+        "200":
+          $ref: "#/components/responses/Me"
+        "401":
+          description: ""
+
   /reviews:
     get:
       tags:
@@ -54,11 +65,7 @@ paths:
             type: string
       responses:
         "200":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Review"
+          $ref: "#/components/responses/ReviewResponse"
         "400":
           description: ""
           content:
@@ -119,6 +126,23 @@ components:
       enum:
         - NotFound
       default: NotFound
+    UserRole:
+      type: string
+      enum:
+        - ADMIN
+        - COMMON
+    Me:
+      type: object
+      required:
+        - name
+        - userRole
+      properties:
+        name:
+          type: string
+          maxLength: 50
+          minLength: 1
+        userRole:
+          $ref: "#/components/schemas/UserRole"
     Review:
       type: object
       required:
@@ -142,6 +166,18 @@ components:
           type: string
 
   responses:
+    Me:
+      description: ""
+      content:
+        "application/json":
+          schema:
+            type: object
+            allOf:
+              - $ref: "#/components/schemas/Me"
+          examples:
+            default:
+              $ref: "#/components/examples/Me"
+
     ReviewListResponse:
       description: ""
       content:
@@ -155,6 +191,24 @@ components:
               allOf:
                 - $ref: "#/components/schemas/WithId"
                 - $ref: "#/components/schemas/Review"
+          examples:
+            default:
+              $ref: "#/components/examples/ReviewListResponse"
+
+    ReviewResponse:
+      description: ""
+      content:
+        "application/json":
+          schema:
+            type: object
+            required:
+              - id
+            allOf:
+              - $ref: "#/components/schemas/WithId"
+              - $ref: "#/components/schemas/Review"
+          examples:
+            default:
+              $ref: "#/components/examples/ReviewResponse"
 
     NotFoundErrorResponse:
       description: ""
@@ -162,3 +216,21 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/NotFoundError"
+
+  examples:
+    ReviewListResponse:
+      value:
+        - id: "1"
+          title: "title"
+          content: "content"
+
+    ReviewResponse:
+      value:
+        id: "1"
+        title: "title"
+        content: "content"
+
+    Me:
+      value:
+        name: "name"
+        userRole: "ADMIN"
