@@ -120,8 +120,11 @@ export type components = {
      */
     UserRole: "ADMIN" | "COMMON"
     Me: {
-      /** @description sample */
-      name?: string
+      /**
+       * @description sample
+       * @default
+       */
+      name: string
       /** @default */
       userRole: components["schemas"]["UserRole"]
     }
