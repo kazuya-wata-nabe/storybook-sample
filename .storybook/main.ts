@@ -6,7 +6,6 @@ const config: StorybookConfig = {
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
-    "@storybook/addon-mdx-gfm",
   ],
   framework: {
     name: "@storybook/vue3-vite",
@@ -14,7 +13,6 @@ const config: StorybookConfig = {
       docgen: "vue-component-meta",
     },
   },
-  staticDirs: ["../public"],
   docs: {},
 }
 export default config

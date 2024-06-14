@@ -13,7 +13,7 @@ const convert = (res: SuccessResponse<"get", "/reviews">) =>
 
 const url = "/reviews"
 type ReviewsResponse = paths[typeof url]["get"]["responses"]["200"]["content"]["application/json"]
-export class ReviewQueryServiceOnApi implements ReviewQueryService {
+export class ReviewQueryServiceOnApiWithAxios implements ReviewQueryService {
   async list() {
     const { data = [] } = await client.get<ReviewsResponse>(url, {})
     return convert(data)

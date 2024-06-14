@@ -1,18 +1,15 @@
 import { ReviewQueryServiceOnApi } from "@/components/review/infra"
 import type { Meta, StoryObj } from "@storybook/vue3"
-import { HttpResponse, http } from "msw"
-import { data1 } from "./__test__/fixture"
+import { data1 } from "./__tests__/fixture"
 import Component from "./index.vue"
-/**
- * 漫画のレビューを一覧表示します
- * - 表示するデータは`/reviews`にリクエストして取得します
- */
+import { http } from "@/lib/msw/handlers"
+
 const meta = {
   component: Component,
   parameters: {
     layout: "fullscreen",
   },
-  tags: ["autodocs"],
+  tags: ["!autodocs"],
 } satisfies Meta<typeof Component>
 
 export default meta
@@ -23,8 +20,8 @@ export const Primary: Story = {
   parameters: {
     msw: {
       handlers: [
-        http.get("/reviews", () => {
-          return HttpResponse.json(data1)
+        http.get("/reviews", ({ response }) => {
+          return response(200).json(data1)
         }),
       ],
     },

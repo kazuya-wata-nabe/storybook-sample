@@ -3,25 +3,26 @@
  * Feel free to commit/edit it as you need.
  */
 import { createOpenApiHttp } from "openapi-msw"
+import { type HttpHandler } from "msw"
 import type { paths } from "@/schema"
 
-const http = createOpenApiHttp<paths>()
-const baseURL = ""
+const baseUrl = ""
+export const http = createOpenApiHttp<paths>({ baseUrl })
 
-export const handlers = [
-  http.get(`${baseURL}/me`, ({ response }) => {
+export const handlers: HttpHandler[] = [
+  http.get(`${baseUrl}/me`, ({ response }) => {
     return response(200).json(examples.Me.value)
   }),
-  http.get(`${baseURL}/reviews`, ({ response }) => {
+  http.get(`${baseUrl}/reviews`, ({ response }) => {
     return response(200).json([...examples.ReviewListResponse.value])
   }),
-  http.post(`${baseURL}/reviews`, ({ response }) => {
+  http.post(`${baseUrl}/reviews`, ({ response }) => {
     return response(201).empty()
   }),
-  http.put(`${baseURL}/reviews/{id}`, ({ response }) => {
+  http.put(`${baseUrl}/reviews/{id}`, ({ response }) => {
     return response(200).json(examples.ReviewResponse.value)
   }),
-  http.delete(`${baseURL}/reviews/{id}`, ({ response }) => {
+  http.delete(`${baseUrl}/reviews/{id}`, ({ response }) => {
     return response(204).empty()
   }),
 ]
