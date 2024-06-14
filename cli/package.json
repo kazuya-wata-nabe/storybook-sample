@@ -1,0 +1,26 @@
+{
+  "name": "cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "gen:json": "pnpm --package=@redocly/cli dlx redocly bundle ../openapi.yaml --ext json -o openapi.json",
+    "gen:api-schema": "openapi-typescript ../openapi.yaml -t -o ../src/schema.d.ts --default-non-nullable true --immutable-types false",
+    "postgen:api-schema": "prettier --write ../src/schema.d.ts",
+    "gen:handlers": "pnpx vite-node ./mock-from-openapi",
+    "gen:doc": "tsp compile .",
+    "postgen:handlers": "prettier --write ../src/lib/msw/handlers.ts"
+  },
+  "devDependencies": {
+    "@typespec/compiler": "latest",
+    "@typespec/http": "latest",
+    "@typespec/openapi3": "latest",
+    "@typespec/rest": "latest",
+    "js-yaml": "^4.1.0",
+    "openapi-typescript": "6.7.6",
+    "vite-node": "^1.6.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

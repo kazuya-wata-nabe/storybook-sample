@@ -12,12 +12,19 @@ export type paths = {
       responses: {
         200: components["responses"]["Me"]
         401: {
-          content: never
+          content: {
+            "application/json": components["schemas"]["Error"][]
+          }
         }
       }
     }
   }
   "/reviews": {
+    /**
+     * @description 映画のレビューを一覧で返却します
+     * - ソート順はpostDateの降順
+     * - titleが設定されている場合は部分一致したレビューを返却
+     */
     get: {
       parameters: {
         query?: {
@@ -113,12 +120,17 @@ export type components = {
      */
     UserRole: "ADMIN" | "COMMON"
     Me: {
-      name: string
+      /** @description sample */
+      name?: string
+      /** @default */
       userRole: components["schemas"]["UserRole"]
     }
     Review: {
+      /** @default sample */
       title: string
       content: string
+      /** Format: date */
+      postDate?: string
     }
     WithId: {
       id: string
@@ -130,7 +142,6 @@ export type components = {
         "application/json": components["schemas"]["Me"]
       }
     }
-    /** @description サンプルです */
     ReviewListResponse: {
       content: {
         "application/json": WithRequired<

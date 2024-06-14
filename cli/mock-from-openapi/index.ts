@@ -1,7 +1,7 @@
-import * as fs from "fs"
+import { readFileSync, writeFileSync } from "fs"
+import { load } from "js-yaml"
 import * as path from "path"
 import { mockTemplate } from "./template"
-import openapi from "./openapi.json"
 import { OpenAPI } from "./types"
 
 const getExample = (
@@ -59,14 +59,15 @@ const createOpCollection = ({ paths, components }: OpenAPI) => {
   })
 }
 
-export const main = (_openapi: OpenAPI, mode?: "debug") => {
-  const opCollection = createOpCollection(_openapi)
-  const handlers = mockTemplate(opCollection, "", _openapi.components.examples)
+export const main = (doc: OpenAPI, mode?: "" | "debug") => {
+  const opCollection = createOpCollection(doc)
+  const handlers = mockTemplate(opCollection, "", doc.components.examples)
   if (mode === "debug") {
     console.debug(handlers)
   } else {
-    fs.writeFileSync(path.resolve(process.cwd(), "src/lib/msw/handlers.ts"), handlers)
+    writeFileSync(path.resolve(process.cwd(), "../src/lib/msw/handlers.ts"), handlers)
   }
 }
 
-main(openapi)
+const doc = load(readFileSync("./openapi.yaml", "utf8")) as OpenAPI
+main(doc, "")

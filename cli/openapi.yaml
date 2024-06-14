@@ -15,19 +15,9 @@ paths:
           $ref: "#/components/responses/Me"
         "401":
           description: ""
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Error"
 
   /reviews:
     get:
-      description: |
-        映画のレビューを一覧で返却します
-        - ソート順はpostDateの降順
-        - titleが設定されている場合は部分一致したレビューを返却
       tags:
         - Review
       parameters:
@@ -147,12 +137,15 @@ components:
         - COMMON
     Me:
       type: object
+      required:
+        - name
+        - userRole
       properties:
         name:
           type: string
-          description: sample
+          maxLength: 50
+          minLength: 1
         userRole:
-          default: ""
           $ref: "#/components/schemas/UserRole"
     Review:
       type: object
@@ -162,14 +155,12 @@ components:
       properties:
         title:
           type: string
-          default: "sample"
+          minLength: 1
+          maxLength: 50
         content:
           type: string
           minLength: 1
           maxLength: 100
-        postDate:
-          type: string
-          format: date
     WithId:
       type: object
       required:
@@ -192,7 +183,7 @@ components:
               $ref: "#/components/examples/Me"
 
     ReviewListResponse:
-      description: ""
+      description: "サンプルです"
       content:
         "application/json":
           schema:
@@ -204,6 +195,8 @@ components:
               allOf:
                 - $ref: "#/components/schemas/WithId"
                 - $ref: "#/components/schemas/Review"
+            minItems: 1
+            maxItems: 2
           examples:
             default:
               $ref: "#/components/examples/ReviewListResponse"
@@ -234,16 +227,14 @@ components:
     ReviewListResponse:
       value:
         - id: "1"
-          title: "レビューのタイトル"
-          content: "レビュー内容"
-          postDate: "2024-06-13"
+          title: "title"
+          content: "content"
 
     ReviewResponse:
       value:
         id: "1"
         title: "title"
         content: "content"
-        postDate: "2024-06-13"
 
     Me:
       value:
