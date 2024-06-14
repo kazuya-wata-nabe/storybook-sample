@@ -34,7 +34,27 @@ paths:
         - $ref: "#/components/parameters/ReviewListQuery"
       responses:
         "200":
-          $ref: "#/components/responses/ReviewListResponse"
+          description: ""
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - id
+                    - title
+                    - content
+                  properties:
+                    id:
+                      example: "hoge-123-fuga"
+                      type: string
+                    title:
+                      description: "あれ"
+                      type: string
+                    content:
+                      example: "おもろい"
+                      type: string
         "400":
           description: The server could not understand the request due to invalid syntax.
           content:

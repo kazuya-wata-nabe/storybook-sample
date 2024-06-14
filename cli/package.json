@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "gen:json": "pnpm --package=@redocly/cli dlx redocly bundle ../openapi.yaml --ext json -o openapi.json",
-    "gen:api-schema": "openapi-typescript ../openapi.yaml -t -o ../src/schema.d.ts --default-non-nullable true --immutable-types false",
+    "gen:api-schema": "openapi-typescript ../openapi.yaml -t -o ../src/schema.d.ts --default-non-nullable true",
     "postgen:api-schema": "prettier --write ../src/schema.d.ts",
     "gen:handlers": "pnpx vite-node ./mock-from-openapi",
     "gen:doc": "tsp compile .",

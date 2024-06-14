@@ -12,7 +12,7 @@ const convert = (res: SuccessResponse<"get", "/reviews">) =>
 
 export class ReviewQueryServiceOnApi implements ReviewQueryService {
   async list() {
-    const { data = [] } = await client.GET("/reviews")
+    const { data = [] } = await client.GET("/reviews", {})
     return convert(data)
   }
 }
