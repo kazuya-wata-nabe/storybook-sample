@@ -3,32 +3,36 @@
  * Feel free to commit/edit it as you need.
  */
 import { createOpenApiHttp } from "openapi-msw"
-import { type HttpHandler } from "msw"
 import type { paths } from "@/schema"
 
-const baseUrl = ""
-export const http = createOpenApiHttp<paths>({ baseUrl })
+const http = createOpenApiHttp<paths>()
 
-export const handlers: HttpHandler[] = [
-  http.get(`${baseUrl}/me`, ({ response }) => {
+export const handlers = [
+  http.get(`/me`, ({ response }) => {
     return response(200).json(examples.Me.value)
   }),
-  http.get(`${baseUrl}/reviews`, ({ response }) => {
+  http.get(`/reviews`, ({ response }) => {
     return response(200).json([...examples.ReviewListResponse.value])
   }),
-  http.post(`${baseUrl}/reviews`, ({ response }) => {
+  http.post(`/reviews`, ({ response }) => {
     return response(201).empty()
   }),
-  http.put(`${baseUrl}/reviews/{id}`, ({ response }) => {
+  http.put(`/reviews/{id}`, ({ response }) => {
     return response(200).json(examples.ReviewResponse.value)
   }),
-  http.delete(`${baseUrl}/reviews/{id}`, ({ response }) => {
+  http.delete(`/reviews/{id}`, ({ response }) => {
     return response(204).empty()
   }),
 ]
 
 const examples = {
-  ReviewListResponse: { value: [{ id: "1", title: "title", content: "content" }] },
-  ReviewResponse: { value: { id: "1", title: "title", content: "content" } },
+  ReviewListResponse: {
+    value: [
+      { id: "1", title: "レビューのタイトル", content: "レビュー内容", postDate: "2024-06-13" },
+    ],
+  },
+  ReviewResponse: {
+    value: { id: "1", title: "title", content: "content", postDate: "2024-06-13" },
+  },
   Me: { value: { name: "name", userRole: "ADMIN" } },
 } as const

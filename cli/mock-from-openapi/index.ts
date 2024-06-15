@@ -69,5 +69,6 @@ export const main = (doc: OpenAPI, mode?: "" | "debug") => {
   }
 }
 
-const doc = load(readFileSync("./openapi.yaml", "utf8")) as OpenAPI
+const [, , input] = process.argv
+const doc = load(readFileSync(input, "utf8")) as OpenAPI
 main(doc, "")
