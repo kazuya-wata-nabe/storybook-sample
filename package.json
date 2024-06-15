@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
+    "postbuild": "rm dist/mockServiceWorker.js",
+    "gen:all": "pnpm -F \"cli\" gen:api-schema && pnpm -F \"cli\" gen:handlers",
+    "postgen:all": "pnpm type-check",
     "preview": "vite preview",
     "test:unit": "vitest",
     "build-only": "vite build",

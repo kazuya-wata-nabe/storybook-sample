@@ -32,7 +32,7 @@ export const mockTemplate = (
 import { createOpenApiHttp } from "openapi-msw"
 import type { paths } from "@/schema"
 
-const http = createOpenApiHttp<paths>()
+export const http = createOpenApiHttp<paths>()
 
 export const handlers = [
   ${transformToHandlerCode(operationCollection)}
