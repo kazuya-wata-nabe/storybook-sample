@@ -24,6 +24,7 @@ paths:
 
   /reviews:
     get:
+      summary: /reviews
       description: |
         映画のレビューを一覧で返却します
         - ソート順はpostDateの降順
