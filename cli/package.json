@@ -8,7 +8,6 @@
     "postgen:api-schema": "prettier --write ../src/schema.d.ts",
     "gen:handlers": "pnpx vite-node ./mock-from-openapi ../openapi.yaml",
     "postgen:handlers": "prettier --write ../src/lib/msw/handlers.ts",
-    "gen:redoc": "pnpm --package=@redocly/cli dlx redocly bundle ../openapi.yaml",
     "gen:openapi": "tsp compile ."
   },
   "devDependencies": {

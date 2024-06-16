@@ -1,0 +1,59 @@
+# 参考: https://vitejs.dev/guide/static-deploy
+name: Build and Publish Storybook to GitHub Pages
+
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "openapi.yaml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - run: corepack enable
+        shell: bash
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: package.json
+          cache: pnpm
+
+      - name: Install dependencies
+        shell: bash
+        run: pnpm install
+        env:
+          HUSKY: 0
+
+      - name: Build Redoc
+        run: pnpm --package=@redocly/cli dlx redocly build-docs ./openapi.yaml -o openapi.html
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "./openapi.html"
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
