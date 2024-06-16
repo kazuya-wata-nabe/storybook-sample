@@ -44,7 +44,7 @@ jobs:
           HUSKY: 0
 
       - name: Build Redoc
-        run: pnpm --package=@redocly/cli dlx redocly build-docs ./openapi.yaml -o openapi.html
+        run: pnpm --package=@redocly/cli dlx redocly build-docs ./openapi.yaml -o ./openapi/index.html
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -52,7 +52,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "./openapi.html"
+          path: "./openapi/index.html"
 
       - name: Deploy to GitHub Pages
         id: deployment
