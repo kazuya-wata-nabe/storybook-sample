@@ -5,7 +5,12 @@ import { mockTemplate } from "./template"
 import { OpenAPI } from "./types"
 
 const getExample = (
-  obj: OpenAPI["components"]["responses"][string]["content"]["application/json"] | undefined,
+  obj:
+    | Extract<
+        OpenAPI["components"]["responses"][string]["content"],
+        { "application/json": unknown }
+      >["application/json"]
+    | undefined,
 ): string => {
   const [first] = Object.values(obj?.examples ?? {})
   const examplePath = first?.$ref ?? ""
@@ -19,18 +24,13 @@ const getExample = (
   return example
 }
 
-const getSuccessCode = (obj: object): string => {
-  const successCode = Object.keys(obj).find((code) => code.startsWith("20"))
-  return successCode ?? ""
-}
-
 const pathWithOp = (paths: OpenAPI["paths"]) => (path: string) => {
   const methods = Object.keys(paths[path])
   return methods.map((method) => {
-    const _responses = paths[path][method]["responses"]
-    const status = getSuccessCode(_responses)
-    const _content = _responses[status]?.["$ref"] ?? ""
-    const content = _content.split("/").at(-1)
+    const responses = paths[path][method]["responses"]
+    const status = Object.keys(responses).find((code) => code.startsWith("20")) ?? ""
+    const ref = responses[status]?.["$ref"] ?? ""
+    const content = ref.split("/").at(-1)
     const response = content ? "json" : "empty"
     return {
       path,
@@ -52,6 +52,7 @@ const createOpCollection = ({ paths, components }: OpenAPI) => {
       example,
     }
   })
+
   return _opCollection.map((op) => {
     const target = examples.find((e) => e.key === op.content)
     const example = target?.example ?? ""

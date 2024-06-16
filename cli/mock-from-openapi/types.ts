@@ -17,24 +17,38 @@ type Path = {
   [path: string]: {
     [method: string]: {
       responses: {
-        [status: string]: {}
+        [status: string]: Ref | Content
       }
     }
   }
 }
 
-type Response = {
-  content: {
-    "application/json": {
+type ContentType = "application/json" | "multipart/form-data"
+type Content = {
+  [Content in ContentType]: {
+    [C in Content]: {
       schema: {
-        type?: string
-        $ref?: string
-      }
-      examples?: {
-        [name: string]: {
-          $ref?: string
-        }
+        type: string
       }
     }
   }
+}[ContentType]
+
+type Response = {
+  content: {
+    [Content in ContentType]: {
+      [C in Content]: {
+        schema: {
+          type?: string
+        } & Ref
+        examples?: {
+          [name: string]: Ref
+        }
+      }
+    }
+  }[ContentType]
+}
+
+type Ref = {
+  $ref?: string
 }
