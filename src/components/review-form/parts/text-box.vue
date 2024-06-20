@@ -17,6 +17,6 @@ const model = defineModel()
 .text-box {
   display: flex;
   flex-direction: column;
-  width: 200px;
+  width: 201px;
 }
 </style>
