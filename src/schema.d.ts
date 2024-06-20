@@ -3,45 +3,87 @@
  * Do not make direct changes to the file.
  */
 
-/** WithRequired type helpers */
-type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] }
-
 export type paths = {
   "/me": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     get: {
+      parameters: {
+        query?: never
+        header?: never
+        path?: never
+        cookie?: never
+      }
+      requestBody?: never
       responses: {
         200: components["responses"]["Me"]
         401: {
+          headers: {
+            [name: string]: unknown
+          }
           content: {
             "application/json": components["schemas"]["Error"][]
           }
         }
       }
     }
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   "/reviews": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
     /**
+     * /reviews
      * @description 映画のレビューを一覧で返却します
-     * - ソート順はpostDateの降順
-     * - titleが設定されている場合は部分一致したレビューを返却
+     *     - ソート順はpostDateの降順
+     *     - titleが設定されている場合は部分一致したレビューを返却
+     *
      */
     get: {
       parameters: {
         query?: {
           title?: components["parameters"]["ReviewListQuery"]
         }
+        header?: never
+        path?: never
+        cookie?: never
       }
+      requestBody?: never
       responses: {
         200: components["responses"]["ReviewListResponse"]
         /** @description The server could not understand the request due to invalid syntax. */
         400: {
+          headers: {
+            [name: string]: unknown
+          }
           content: {
             "application/json": components["schemas"]["Error"][]
           }
         }
       }
     }
+    put?: never
     post: {
+      parameters: {
+        query?: never
+        header?: never
+        path?: never
+        cookie?: never
+      }
       requestBody: {
         content: {
           "application/json": components["schemas"]["Review"]
@@ -49,22 +91,43 @@ export type paths = {
       }
       responses: {
         201: {
-          content: never
+          headers: {
+            [name: string]: unknown
+          }
+          content?: never
         }
         400: {
+          headers: {
+            [name: string]: unknown
+          }
           content: {
             "application/json": components["schemas"]["Error"][]
           }
         }
       }
     }
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
   "/reviews/{id}": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
     put: {
       parameters: {
+        query?: never
+        header?: never
         path: {
           id: string
         }
+        cookie?: never
       }
       requestBody: {
         content: {
@@ -74,6 +137,9 @@ export type paths = {
       responses: {
         200: components["responses"]["ReviewResponse"]
         400: {
+          headers: {
+            [name: string]: unknown
+          }
           content: {
             "application/json": components["schemas"]["Error"][]
           }
@@ -81,24 +147,34 @@ export type paths = {
         404: components["responses"]["NotFoundErrorResponse"]
       }
     }
+    post?: never
     delete: {
       parameters: {
+        query?: never
+        header?: never
         path: {
           id: string
         }
+        cookie?: never
       }
+      requestBody?: never
       responses: {
         204: {
-          content: never
+          headers: {
+            [name: string]: unknown
+          }
+          content?: never
         }
         404: components["responses"]["NotFoundErrorResponse"]
       }
     }
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
   }
 }
-
 export type webhooks = Record<string, never>
-
 export type components = {
   schemas: {
     Error: {
@@ -113,8 +189,8 @@ export type components = {
     NotFoundError: "NotFound"
     /**
      * @description
-     * * ADMIN - 管理者
-     * * COMMON - 一般ユーザ
+     *     * ADMIN - 管理者
+     *     * COMMON - 一般ユーザ
      *
      * @enum {string}
      */
@@ -125,7 +201,7 @@ export type components = {
        * @default
        */
       name: string
-      /** @default */
+      /** @default  */
       userRole: components["schemas"]["UserRole"]
     }
     Review: {
@@ -141,42 +217,49 @@ export type components = {
   }
   responses: {
     Me: {
+      headers: {
+        [name: string]: unknown
+      }
       content: {
         "application/json": components["schemas"]["Me"]
       }
     }
     ReviewListResponse: {
+      headers: {
+        [name: string]: unknown
+      }
       content: {
-        "application/json": WithRequired<
-          components["schemas"]["WithId"] & components["schemas"]["Review"],
-          "id"
-        >[]
+        "application/json": (WithRequired<components["schemas"]["WithId"], "id"> &
+          components["schemas"]["Review"])[]
       }
     }
     ReviewResponse: {
+      headers: {
+        [name: string]: unknown
+      }
       content: {
-        "application/json": WithRequired<
-          components["schemas"]["WithId"] & components["schemas"]["Review"],
-          "id"
-        >
+        "application/json": WithRequired<components["schemas"]["WithId"], "id"> &
+          components["schemas"]["Review"]
       }
     }
     NotFoundErrorResponse: {
+      headers: {
+        [name: string]: unknown
+      }
       content: {
         "application/json": components["schemas"]["NotFoundError"]
       }
     }
   }
   parameters: {
-    ReviewListQuery?: string
+    ReviewListQuery: string
   }
   requestBodies: never
   headers: never
   pathItems: never
 }
-
 export type $defs = Record<string, never>
-
-export type external = Record<string, never>
-
+type WithRequired<T, K extends keyof T> = T & {
+  [P in K]-?: T[P]
+}
 export type operations = Record<string, never>

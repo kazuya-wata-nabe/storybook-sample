@@ -16,7 +16,7 @@
     "@typespec/openapi3": "latest",
     "@typespec/rest": "latest",
     "js-yaml": "^4.1.0",
-    "openapi-typescript": "6.7.6",
+    "openapi-typescript": "7.0.0",
     "vite-node": "^1.6.0"
   },
   "keywords": [],
