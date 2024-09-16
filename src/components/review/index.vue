@@ -37,7 +37,7 @@ const items = computed(() => {
     <div class="container" v-if="items.length">
       <ul class="review-list">
         <li class="tittle" v-for="item in items" :key="item.id">
-          {{ item.title }}
+          <span :class="{ netabare: item.netabare }">{{ item.title }}</span>
           <p class="content">{{ item.content }}</p>
         </li>
       </ul>
@@ -58,5 +58,9 @@ const items = computed(() => {
 .content {
   white-space: pre-wrap;
   width: 200px;
+}
+
+.netabare {
+  color: red;
 }
 </style>

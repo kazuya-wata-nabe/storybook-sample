@@ -33,8 +33,8 @@ const onSubmit = async () => {
 
 <template>
   <div>
-    <p>タイトル:&nbsp;{{ MAX_LENGTH.title }}文字まで</p>
-    <p>内容:&nbsp;{{ MAX_LENGTH.content }}文字まで</p>
+    <p>タイトル:&nbsp;{{ MAX_LENGTH.title }}文字まで!</p>
+    <p>内容:&nbsp;{{ MAX_LENGTH.content }}文字ま&nbsp;で</p>
     <form aria-label="form" @submit.prevent="onSubmit">
       <text-box label="タイトル" name="title" v-model="title"></text-box>
       <text-box label="内容" name="content" v-model="content"></text-box>
@@ -51,6 +51,6 @@ form {
   flex-direction: column;
 }
 .button-area {
-  padding: 16px 0;
+  padding: 15px 0;
 }
 </style>
